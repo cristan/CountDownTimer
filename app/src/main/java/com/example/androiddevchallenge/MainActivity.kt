@@ -18,11 +18,28 @@ package com.example.androiddevchallenge
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieAnimationSpec
+import com.airbnb.lottie.compose.rememberLottieAnimationState
 import com.example.androiddevchallenge.ui.theme.MyTheme
 
 class MainActivity : AppCompatActivity() {
@@ -40,8 +57,48 @@ class MainActivity : AppCompatActivity() {
 @Composable
 fun MyApp() {
     Surface(color = MaterialTheme.colors.background) {
-        Text(text = "Ready... Set... GO!")
+        val (seconds, setSeconds) = remember { mutableStateOf(TextFieldValue("")) }
+        val (minutes, setMinutes) = remember { mutableStateOf(TextFieldValue("")) }
+        val (hours, setHours) = remember { mutableStateOf(TextFieldValue("")) }
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Column {
+                MyInputField(title = "Hours", text = hours, setText = setHours)
+                MyInputField(title = "Minutes", text = minutes, setText = setMinutes)
+                MyInputField(title = "Seconds", text = seconds, setText = setSeconds)
+            }
+        }
     }
+}
+
+@Composable
+fun MyInputField(title: String, text: TextFieldValue, setText: (TextFieldValue) -> Unit) {
+    OutlinedTextField(
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        singleLine = true,
+        value = text,
+        onValueChange = {
+            setText(it)
+        },
+        label = { Text(title) }
+    )
+}
+
+@Composable
+fun Loader() {
+    val animationSpec = remember { LottieAnimationSpec.RawRes(R.raw.loading_loop_animation_7743) }
+    val animationState = rememberLottieAnimationState(autoPlay = true, repeatCount = Integer.MAX_VALUE)
+    LottieAnimation(
+        animationSpec,
+        animationState = animationState,
+        modifier = Modifier.size(100.dp)
+    )
 }
 
 @Preview("Light Theme", widthDp = 360, heightDp = 640)
