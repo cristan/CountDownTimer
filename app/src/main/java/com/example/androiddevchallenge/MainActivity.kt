@@ -20,10 +20,13 @@ import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Surface
@@ -37,6 +40,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigate
+import androidx.navigation.compose.rememberNavController
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieAnimationSpec
 import com.airbnb.lottie.compose.rememberLottieAnimationState
@@ -47,34 +55,53 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MyTheme {
-                MyApp()
+                MainNavigation()
             }
         }
     }
 }
 
-// Start building your app here!
 @Composable
-fun MyApp() {
+fun MainNavigation() {
+    val navController = rememberNavController()
+    NavHost(navController, startDestination = "durationSetup") {
+        composable("durationSetup") { DurationSetup(navController) }
+        composable("countdown") { CountDown() }
+    }
+}
+
+@Composable
+fun DurationSetup(navController: NavHostController) {
     Surface(color = MaterialTheme.colors.background) {
         val (seconds, setSeconds) = remember { mutableStateOf(TextFieldValue("")) }
         val (minutes, setMinutes) = remember { mutableStateOf(TextFieldValue("")) }
         val (hours, setHours) = remember { mutableStateOf(TextFieldValue("")) }
 
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier.fillMaxHeight(),
+            verticalArrangement = Arrangement.Center
         ) {
-            Column {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 MyInputField(title = "Hours", text = hours, setText = setHours)
                 MyInputField(title = "Minutes", text = minutes, setText = setMinutes)
                 MyInputField(title = "Seconds", text = seconds, setText = setSeconds)
+                Spacer(modifier = Modifier.height(20.dp))
+                Button(
+                    onClick = { navController.navigate("countdown") }
+                ) {
+                    Text(text = "Start")
+                }
             }
         }
     }
+}
+
+@Composable
+fun CountDown() {
+    Loader()
 }
 
 @Composable
@@ -83,9 +110,7 @@ fun MyInputField(title: String, text: TextFieldValue, setText: (TextFieldValue) 
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         singleLine = true,
         value = text,
-        onValueChange = {
-            setText(it)
-        },
+        onValueChange = { setText(it) },
         label = { Text(title) }
     )
 }
@@ -105,7 +130,7 @@ fun Loader() {
 @Composable
 fun LightPreview() {
     MyTheme {
-        MyApp()
+        DurationSetup(rememberNavController())
     }
 }
 
@@ -113,6 +138,6 @@ fun LightPreview() {
 @Composable
 fun DarkPreview() {
     MyTheme(darkTheme = true) {
-        MyApp()
+        DurationSetup(rememberNavController())
     }
 }
