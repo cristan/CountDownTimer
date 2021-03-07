@@ -9,7 +9,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -38,8 +37,8 @@ fun DurationSetup(navController: NavHostController) {
                 Spacer(modifier = Modifier.height(20.dp))
                 Button(
                     onClick = {
-                        val duration =
-                            seconds.toInt() + (minutes.toInt() * 60) + (hours.toInt() * 3600)
+                        val duration = seconds.toIntSafe() + (minutes.toIntSafe() * 60) +
+                                (hours.toIntSafe() * 3600)
                         navController.navigate("countdown/$duration")
                     }
                 ) {
@@ -61,7 +60,7 @@ fun MyInputField(title: String, text: String, setText: (String) -> Unit) {
     )
 }
 
-private fun TextFieldValue.toInt() = this.text.toIntOrNull() ?: 0
+private fun String.toIntSafe() = this.toIntOrNull() ?: 0
 
 @Preview("Light Theme", widthDp = 360, heightDp = 640)
 @Composable
