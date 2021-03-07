@@ -20,9 +20,9 @@ import com.example.androiddevchallenge.ui.theme.MyTheme
 @Composable
 fun DurationSetup(navController: NavHostController) {
     Surface(color = MaterialTheme.colors.background) {
-        val (seconds, setSeconds) = remember { mutableStateOf(TextFieldValue("")) }
-        val (minutes, setMinutes) = remember { mutableStateOf(TextFieldValue("")) }
-        val (hours, setHours) = remember { mutableStateOf(TextFieldValue("")) }
+        val (seconds, setSeconds) = remember { mutableStateOf("") }
+        val (minutes, setMinutes) = remember { mutableStateOf("") }
+        val (hours, setHours) = remember { mutableStateOf("") }
 
         Column(
             modifier = Modifier.fillMaxHeight(),
@@ -51,7 +51,7 @@ fun DurationSetup(navController: NavHostController) {
 }
 
 @Composable
-fun MyInputField(title: String, text: TextFieldValue, setText: (TextFieldValue) -> Unit) {
+fun MyInputField(title: String, text: String, setText: (String) -> Unit) {
     OutlinedTextField(
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         singleLine = true,
