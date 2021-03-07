@@ -66,6 +66,11 @@ fun MainNavigation() {
     val navController = rememberNavController()
     NavHost(navController, startDestination = "durationSetup") {
         composable("durationSetup") { DurationSetup(navController) }
-        composable("countdown") { CountDown() }
+        composable("countdown/{duration}") { backStackEntry ->
+            // TODO: should probably be in Int type:
+            //https://proandroiddev.com/passing-multi-typed-data-between-screens-with-jetpack-compose-navigation-component-39ccbcf901ff
+            val duration = backStackEntry.arguments!!.getString("duration")!!.toInt()
+            CountDown(duration)
+        }
     }
 }

@@ -1,6 +1,8 @@
 package com.example.androiddevchallenge
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -12,8 +14,11 @@ import com.airbnb.lottie.compose.rememberLottieAnimationState
 import com.example.androiddevchallenge.ui.theme.MyTheme
 
 @Composable
-fun CountDown() {
-    Loader()
+fun CountDown(duration: Int) {
+    Column {
+        Loader()
+        Text(duration.toString())
+    }
 }
 
 @Composable
@@ -32,7 +37,7 @@ fun Loader() {
 @Composable
 private fun LightPreview() {
     MyTheme {
-        CountDown()
+        CountDown(35)
     }
 }
 
@@ -40,6 +45,6 @@ private fun LightPreview() {
 @Composable
 private fun DarkPreview() {
     MyTheme(darkTheme = true) {
-        CountDown()
+        CountDown(35)
     }
 }

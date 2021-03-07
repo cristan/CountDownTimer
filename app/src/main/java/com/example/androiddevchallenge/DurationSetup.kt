@@ -37,7 +37,11 @@ fun DurationSetup(navController: NavHostController) {
                 MyInputField(title = "Seconds", text = seconds, setText = setSeconds)
                 Spacer(modifier = Modifier.height(20.dp))
                 Button(
-                    onClick = { navController.navigate("countdown") }
+                    onClick = {
+                        val duration =
+                            seconds.toInt() + (minutes.toInt() * 60) + (hours.toInt() * 3600)
+                        navController.navigate("countdown/$duration")
+                    }
                 ) {
                     Text(text = "Start")
                 }
@@ -56,6 +60,8 @@ fun MyInputField(title: String, text: TextFieldValue, setText: (TextFieldValue) 
         label = { Text(title) }
     )
 }
+
+private fun TextFieldValue.toInt() = this.text.toIntOrNull() ?: 0
 
 @Preview("Light Theme", widthDp = 360, heightDp = 640)
 @Composable
