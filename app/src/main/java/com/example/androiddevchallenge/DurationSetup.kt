@@ -20,6 +20,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
 import com.example.androiddevchallenge.ui.theme.MyTheme
+import com.example.androiddevchallenge.ui.theme.cabaret
+import com.example.androiddevchallenge.ui.theme.spindle
 
 @Composable
 fun DurationSetup(navController: NavHostController) {
@@ -40,7 +42,7 @@ fun DurationSetup(navController: NavHostController) {
             }
             Spacer(modifier = Modifier.height(20.dp))
 
-            GradientButton(
+            FancyButton(
                 text = "START",
                 onClick = {
                     val duration = seconds.toIntSafe() + (minutes.toIntSafe() * 60) +
@@ -53,24 +55,24 @@ fun DurationSetup(navController: NavHostController) {
 }
 
 @Composable
-fun GradientButton(
+fun FancyButton(
     text: String,
+    useGradient: Boolean = true,
     onClick: () -> Unit = { },
 ) {
     Button(
         modifier = Modifier.clip(shape = RoundedCornerShape(percent = 50)),
-        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
+        colors = ButtonDefaults.buttonColors(backgroundColor = if (useGradient) Color.Transparent else spindle),
         contentPadding = PaddingValues(),
         onClick = { onClick() },
     ) {
         val fancyGradient = Brush.horizontalGradient(listOf(Color(0xFFD73874), Color(0xFFE8636E)))
+        val modifier = if (useGradient) Modifier.background(fancyGradient) else Modifier
         Box(
-            modifier = Modifier.background(fancyGradient)
-                .padding(horizontal = 32.dp, vertical = 16.dp)
-            ,
+            modifier = modifier.padding(horizontal = 32.dp, vertical = 16.dp),
             contentAlignment = Alignment.Center,
         ) {
-            Text(text = text)
+            Text(text = text, color = if (useGradient) Color.Unspecified else cabaret)
         }
     }
 }

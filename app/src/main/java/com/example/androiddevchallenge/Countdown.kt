@@ -1,16 +1,13 @@
 package com.example.androiddevchallenge
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,13 +30,20 @@ fun CountDown(viewModel: CountdownViewModel) {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Loader()
             Text(
                 text = observedDuration.toString(),
-                fontSize = 35.sp,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.fillMaxHeight(fraction = 0.4f)
+                fontSize = 35.sp
             )
+            Loader()
+//            Spacer(modifier = Modifier.height(20.dp))
+//            FancyButton(
+//                text = "PAUSE",
+//                onClick = {
+//                    viewModel.playPause()
+//                },
+//                useGradient = false
+//            )
+            Spacer(modifier = Modifier.fillMaxHeight(fraction = .5f))
         }
     }
 }
@@ -51,14 +55,13 @@ fun Loader() {
         rememberLottieAnimationState(autoPlay = true, repeatCount = Integer.MAX_VALUE)
     LottieAnimation(
         animationSpec,
-        animationState = animationState,
-        modifier = Modifier.size(100.dp)
+        animationState = animationState
     )
 }
 
 @Preview(widthDp = 360, heightDp = 640)
 @Composable
-private fun PreviewCountdown() {
+fun PreviewCountdown() {
     MyTheme {
         CountDown(viewModel())
     }

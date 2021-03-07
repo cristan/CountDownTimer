@@ -4,8 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import java.text.DecimalFormat
 
 class CountdownViewModel : ViewModel() {
@@ -13,11 +12,21 @@ class CountdownViewModel : ViewModel() {
     private val _duration = MutableLiveData<String>()
     val duration: LiveData<String> = _duration
 
-    fun setInitialDuration(duration: Int) {
-        viewModelScope.launch {
-            for(currentValue in duration downTo 0) {
-                _duration.value = formatTimePeriod(currentValue)
-                delay(1000)
+    private var countDownJob: Job? = null
+
+    fun setInitialDuration(duration: Int) = countDown(duration)
+
+    private fun countDown(duration: Int) {
+        countDownJob = viewModelScope.launch {
+            for (currentValue in duration downTo 0) {
+                // TODO: doesn't work for some reason
+                val active = isActive
+                if (active) {
+                    _duration.value = formatTimePeriod(currentValue)
+                    delay(1000)
+                } else {
+                    break
+                }
             }
         }
     }
@@ -39,5 +48,15 @@ class CountdownViewModel : ViewModel() {
         val seconds = period - (minutes * 60)
 
         return "${twoDigitsFormat.format(minutes)}:${twoDigitsFormat.format(seconds)}"
+    }
+
+    fun playPause() {
+        val job = countDownJob
+        if (job != null) {
+            job.cancel()
+            countDownJob = null
+        } else {
+            countDown(11)
+        }
     }
 }
