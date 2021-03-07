@@ -42,9 +42,6 @@ fun DurationSetup(navController: NavHostController) {
 
             GradientButton(
                 text = "START",
-                modifier = Modifier
-                    .wrapContentWidth()
-                    .padding(horizontal = 32.dp, vertical = 16.dp),
                 onClick = {
                     val duration = seconds.toIntSafe() + (minutes.toIntSafe() * 60) +
                             (hours.toIntSafe() * 3600)
@@ -58,18 +55,19 @@ fun DurationSetup(navController: NavHostController) {
 @Composable
 fun GradientButton(
     text: String,
-    modifier: Modifier = Modifier,
     onClick: () -> Unit = { },
 ) {
     Button(
-        modifier = modifier.clip(shape = RoundedCornerShape(percent = 50)),
+        modifier = Modifier.clip(shape = RoundedCornerShape(percent = 50)),
         colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
         contentPadding = PaddingValues(),
         onClick = { onClick() },
     ) {
         val fancyGradient = Brush.horizontalGradient(listOf(Color(0xFFD73874), Color(0xFFE8636E)))
         Box(
-            modifier = Modifier.background(fancyGradient).then(modifier),
+            modifier = Modifier.background(fancyGradient)
+                .padding(horizontal = 32.dp, vertical = 16.dp)
+            ,
             contentAlignment = Alignment.Center,
         ) {
             Text(text = text)
