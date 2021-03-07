@@ -56,7 +56,7 @@ fun MyInputField(title: String, text: String, setText: (String) -> Unit) {
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         singleLine = true,
         value = text,
-        onValueChange = { setText(it) },
+        onValueChange = setText,
         label = { Text(title) }
     )
 }
