@@ -1,14 +1,17 @@
 package com.example.androiddevchallenge
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -17,7 +20,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
 import com.example.androiddevchallenge.ui.theme.MyTheme
-import com.example.androiddevchallenge.ui.theme.cardinal
 
 @Composable
 fun DurationSetup(navController: NavHostController) {
@@ -37,16 +39,40 @@ fun DurationSetup(navController: NavHostController) {
                 MyInputField(title = "Seconds", text = seconds, setText = setSeconds, 1f)
             }
             Spacer(modifier = Modifier.height(20.dp))
-            Button(
-                colors = ButtonDefaults.buttonColors(backgroundColor = cardinal, contentColor = Color.White),
+
+            GradientButton(
+                text = "START",
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .padding(horizontal = 32.dp, vertical = 16.dp),
                 onClick = {
                     val duration = seconds.toIntSafe() + (minutes.toIntSafe() * 60) +
                             (hours.toIntSafe() * 3600)
                     navController.navigate("countdown/$duration")
                 }
-            ) {
-                Text(text = "Start")
-            }
+            )
+        }
+    }
+}
+
+@Composable
+fun GradientButton(
+    text: String,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = { },
+) {
+    Button(
+        modifier = modifier.clip(shape = RoundedCornerShape(percent = 50)),
+        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
+        contentPadding = PaddingValues(),
+        onClick = { onClick() },
+    ) {
+        val fancyGradient = Brush.horizontalGradient(listOf(Color(0xFFD73874), Color(0xFFE8636E)))
+        Box(
+            modifier = Modifier.background(fancyGradient).then(modifier),
+            contentAlignment = Alignment.Center,
+        ) {
+            Text(text = text)
         }
     }
 }
