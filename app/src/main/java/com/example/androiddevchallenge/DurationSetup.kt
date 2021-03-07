@@ -24,26 +24,22 @@ fun DurationSetup(navController: NavHostController) {
         val (hours, setHours) = remember { mutableStateOf("") }
 
         Column(
-            modifier = Modifier.fillMaxHeight(),
-            verticalArrangement = Arrangement.Center
+            modifier = Modifier.fillMaxWidth().fillMaxHeight(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                MyInputField(title = "Hours", text = hours, setText = setHours)
-                MyInputField(title = "Minutes", text = minutes, setText = setMinutes)
-                MyInputField(title = "Seconds", text = seconds, setText = setSeconds)
-                Spacer(modifier = Modifier.height(20.dp))
-                Button(
-                    onClick = {
-                        val duration = seconds.toIntSafe() + (minutes.toIntSafe() * 60) +
-                                (hours.toIntSafe() * 3600)
-                        navController.navigate("countdown/$duration")
-                    }
-                ) {
-                    Text(text = "Start")
+            MyInputField(title = "Hours", text = hours, setText = setHours)
+            MyInputField(title = "Minutes", text = minutes, setText = setMinutes)
+            MyInputField(title = "Seconds", text = seconds, setText = setSeconds)
+            Spacer(modifier = Modifier.height(20.dp))
+            Button(
+                onClick = {
+                    val duration = seconds.toIntSafe() + (minutes.toIntSafe() * 60) +
+                            (hours.toIntSafe() * 3600)
+                    navController.navigate("countdown/$duration")
                 }
+            ) {
+                Text(text = "Start")
             }
         }
     }
