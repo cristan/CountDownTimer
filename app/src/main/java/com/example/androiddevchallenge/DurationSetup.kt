@@ -24,13 +24,17 @@ fun DurationSetup(navController: NavHostController) {
         val (hours, setHours) = remember { mutableStateOf("") }
 
         Column(
-            modifier = Modifier.fillMaxWidth().fillMaxHeight(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            MyInputField(title = "Hours", text = hours, setText = setHours)
-            MyInputField(title = "Minutes", text = minutes, setText = setMinutes)
-            MyInputField(title = "Seconds", text = seconds, setText = setSeconds)
+            Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp)) {
+                MyInputField(title = "Hours", text = hours, setText = setHours, .3333f)
+                MyInputField(title = "Minutes", text = minutes, setText = setMinutes, .5f)
+                MyInputField(title = "Seconds", text = seconds, setText = setSeconds, 1f)
+            }
             Spacer(modifier = Modifier.height(20.dp))
             Button(
                 onClick = {
@@ -46,8 +50,9 @@ fun DurationSetup(navController: NavHostController) {
 }
 
 @Composable
-fun MyInputField(title: String, text: String, setText: (String) -> Unit) {
+fun MyInputField(title: String, text: String, setText: (String) -> Unit, fraction: Float) {
     OutlinedTextField(
+        modifier = Modifier.fillMaxWidth(fraction = fraction).padding(horizontal = 4.dp),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         singleLine = true,
         value = text,
