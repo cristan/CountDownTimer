@@ -20,8 +20,10 @@ import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.rememberNavController
 import com.example.androiddevchallenge.ui.theme.MyTheme
 
@@ -41,10 +43,13 @@ fun MainNavigation() {
     val navController = rememberNavController()
     NavHost(navController, startDestination = "durationSetup") {
         composable("durationSetup") { DurationSetup(navController) }
-        composable("countdown/{duration}") { backStackEntry ->
-            // TODO: should probably be in Int type:
-            // https://proandroiddev.com/passing-multi-typed-data-between-screens-with-jetpack-compose-navigation-component-39ccbcf901ff
-            val duration = backStackEntry.arguments!!.getString("duration")!!.toInt()
+
+        val durationArgName = "duration"
+        composable(
+            route = "countdown/{$durationArgName}",
+            arguments = listOf(navArgument(durationArgName) { type = NavType.IntType })
+        ) { backStackEntry ->
+            val duration = backStackEntry.arguments!!.getInt(durationArgName)
             val countdownViewModel: CountdownViewModel = viewModel()
             countdownViewModel.setInitialDuration(duration)
             CountDown(countdownViewModel)
