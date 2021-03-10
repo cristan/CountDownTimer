@@ -21,7 +21,7 @@ buildscript {
 
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
 
     dependencies {
@@ -38,7 +38,7 @@ subprojects {
     repositories {
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         google()
-        jcenter()
+        mavenCentral()
     }
 
     apply plugin: 'com.diffplug.spotless'
