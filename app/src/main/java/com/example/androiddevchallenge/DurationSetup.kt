@@ -46,7 +46,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
 import com.example.androiddevchallenge.ui.theme.MyTheme
 import com.example.androiddevchallenge.ui.theme.cabaret
@@ -87,7 +86,7 @@ fun DurationSetup(navController: NavHostController) {
 fun FancyButton(
     text: String,
     useGradient: Boolean = true,
-    onClick: () -> Unit = { },
+    onClick: () -> Unit,
 ) {
     Button(
         modifier = Modifier.clip(shape = RoundedCornerShape(percent = 50)),

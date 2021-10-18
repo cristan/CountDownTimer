@@ -32,9 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieAnimationSpec
-import com.airbnb.lottie.compose.rememberLottieAnimationState
+import com.airbnb.lottie.compose.*
 import com.example.androiddevchallenge.ui.theme.MyTheme
 
 @Composable
@@ -69,12 +67,11 @@ fun CountDown(viewModel: CountdownViewModel) {
 
 @Composable
 fun Loader() {
-    val animationSpec = remember { LottieAnimationSpec.RawRes(R.raw.loading_loop_animation_7743) }
-    val animationState =
-        rememberLottieAnimationState(autoPlay = true, repeatCount = Integer.MAX_VALUE)
+    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.loading_loop_animation_7743))
+    val progress by animateLottieCompositionAsState(composition, iterations = Integer.MAX_VALUE)
     LottieAnimation(
-        animationSpec,
-        animationState = animationState
+        composition,
+        progress,
     )
 }
 
